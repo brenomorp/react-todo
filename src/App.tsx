@@ -1,35 +1,40 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import DoneTask from "./components/DoneTask";
+import Form from "./components/Form";
+import UndoneTask from "./components/UndoneTask";
+import useGlobalContext from "./hooks/useGlobalContext";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const { undoneTasks, doneTasks } = useGlobalContext();
 
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <main className="flex h-screen items-center justify-center bg-violet-500 p-16 text-white">
+      <div className="flex max-h-full w-[600px] flex-col items-center justify-center rounded-lg bg-violet-950 p-8">
+        <h1 className="mb-12 text-3xl font-bold">Lista de tarefas</h1>
+
+        <Form />
+
+        {undoneTasks.length > 0 || doneTasks.length > 0 ? (
+          <>
+            <p className="mb-8 ml-4 self-start text-xl">
+              Tarefas pendentes: {undoneTasks.length}
+            </p>
+            <div className="flex w-full flex-col gap-4 overflow-y-auto scroll-smooth px-4 scrollbar-thin scrollbar-track-violet-700 scrollbar-thumb-violet-500 scrollbar-track-rounded-lg scrollbar-thumb-rounded-lg">
+              {undoneTasks.map((task) => (
+                <UndoneTask text={task.title} id={task.id} key={task.id} />
+              ))}
+              {doneTasks.map((task) => (
+                <DoneTask text={task.title} id={task.id} key={task.id} />
+              ))}
+            </div>
+          </>
+        ) : (
+          <div>
+            <p className="my-4 text-xl">Nenhuma tarefa no momento!</p>
+          </div>
+        )}
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    </main>
+  );
 }
 
-export default App
+export default App;
