@@ -1,5 +1,5 @@
 import useGlobalContext from "../hooks/useGlobalContext";
-import { useState } from "react";
+import { useState, useRef } from "react";
 
 type EditFormType = {
   id: string;
@@ -9,6 +9,7 @@ function EditForm({ id }: EditFormType) {
   const { setUndoneTasks } = useGlobalContext();
 
   const [updatedTitle, setUpdatedTitle] = useState<string>("");
+  const inputRef = useRef<HTMLInputElement>(null);
 
   function UpdateTask(e: React.FormEvent<HTMLFormElement>, id: string) {
     e.preventDefault();
@@ -22,6 +23,11 @@ function EditForm({ id }: EditFormType) {
     });
   }
 
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setUpdatedTitle(e.target.value);
+    inputRef.current?.setCustomValidity("");
+  };
+
   return (
     <form onSubmit={(e) => UpdateTask(e, id)} className="flex min-w-full">
       <input
@@ -32,12 +38,15 @@ function EditForm({ id }: EditFormType) {
         maxLength={80}
         required
         pattern="^.{1,80}$"
-        onChange={(e) => setUpdatedTitle(e.target.value)}
-        onInvalid={(e) =>
-          (e.target as HTMLInputElement).setCustomValidity(
-            "Este campo não pode ficar vazio"
-          )
-        }
+        onChange={handleInputChange}
+        onInvalid={() => {
+          if (inputRef.current?.validationMessage) {
+            inputRef.current.setCustomValidity(
+              "Este campo não pode ficar vazio"
+            );
+          }
+        }}
+        ref={inputRef}
       />
       <button
         type="submit"

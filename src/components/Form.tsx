@@ -1,7 +1,14 @@
 import useGlobalContext from "../hooks/useGlobalContext";
+import { useRef } from "react";
 
 function Form() {
   const { title, setTitle, addTask } = useGlobalContext();
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setTitle(e.target.value);
+    inputRef.current?.setCustomValidity("");
+  };
 
   return (
     <form onSubmit={addTask} className="mb-12 flex min-w-full">
@@ -13,12 +20,15 @@ function Form() {
         value={title}
         required
         pattern="^.{1,80}$"
-        onChange={(e) => setTitle(e.target.value)}
-        onInvalid={(e) =>
-          (e.target as HTMLInputElement).setCustomValidity(
-            "Este campo não pode ficar vazio"
-          )
-        }
+        onChange={handleInputChange}
+        onInvalid={() => {
+          if (inputRef.current?.validationMessage) {
+            inputRef.current.setCustomValidity(
+              "Este campo não pode ficar vazio"
+            );
+          }
+        }}
+        ref={inputRef}
       />
       <button
         type="submit"
