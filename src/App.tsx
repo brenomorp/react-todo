@@ -1,10 +1,37 @@
+import { useEffect } from "react";
 import DoneTask from "./components/DoneTask";
 import Form from "./components/Form";
 import UndoneTask from "./components/UndoneTask";
 import useGlobalContext from "./hooks/useGlobalContext";
 
 function App() {
-  const { undoneTasks, doneTasks } = useGlobalContext();
+  const { undoneTasks, doneTasks, setUndoneTasks, setDoneTasks } =
+    useGlobalContext();
+
+  useEffect(() => {
+    const storedUndoneTasks = localStorage.getItem("undoneTasks");
+    const storedDoneTasks = localStorage.getItem("doneTasks");
+
+    if (storedUndoneTasks) {
+      setUndoneTasks(JSON.parse(storedUndoneTasks));
+    }
+
+    if (storedDoneTasks) {
+      setDoneTasks(JSON.parse(storedDoneTasks));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    const storeData = () => {
+      localStorage.setItem("doneTasks", JSON.stringify(doneTasks));
+      localStorage.setItem("undoneTasks", JSON.stringify(undoneTasks));
+    };
+
+    doneTasks.length > 0 || undoneTasks.length > 0
+      ? storeData()
+      : localStorage.clear();
+  }, [doneTasks, undoneTasks]);
 
   return (
     <main className="flex h-screen items-center justify-center bg-violet-500 p-16 text-white">
