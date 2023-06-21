@@ -35,9 +35,9 @@ function EditForm({ id }: EditFormType) {
         placeholder="Edite a tarefa"
         className="h-12 flex-1 border border-violet-500 bg-violet-950 p-2 outline-none"
         value={updatedTitle}
-        maxLength={80}
+        maxLength={50}
         required
-        pattern="^.{1,80}$"
+        pattern="^.{1,50}$"
         onChange={handleInputChange}
         onInvalid={() => {
           if (inputRef.current?.validationMessage) {

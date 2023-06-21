@@ -21,7 +21,7 @@ function UndoneTask({ text, id, updating }: TaskProps) {
             className="absolute inset-0 flex h-full w-full cursor-pointer items-center p-4"
             onClick={() => markAsDone(id)}
           >
-            <p className="break-all">{text}</p>
+            <p className="w-4/5 break-all">{text}</p>
           </div>
           <div className="flex items-center justify-center gap-4">
             <Edit

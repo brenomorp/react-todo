@@ -16,10 +16,10 @@ function Form() {
         type="text"
         placeholder="Qual a tarefa do dia?"
         className="h-12 flex-1 border border-violet-500 bg-violet-950 p-2 outline-none"
-        maxLength={80}
+        maxLength={50}
         value={title}
         required
-        pattern="^.{1,80}$"
+        pattern="^.{1,50}$"
         onChange={handleInputChange}
         onInvalid={() => {
           if (inputRef.current?.validationMessage) {
