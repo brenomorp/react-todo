@@ -11,7 +11,14 @@ function Form() {
         className="h-12 flex-1 border border-violet-500 bg-violet-950 p-2 outline-none"
         maxLength={80}
         value={title}
+        required
+        pattern="^.{1,80}$"
         onChange={(e) => setTitle(e.target.value)}
+        onInvalid={(e) =>
+          (e.target as HTMLInputElement).setCustomValidity(
+            "Este campo não pode ficar vazio"
+          )
+        }
       />
       <button
         type="submit"

@@ -10,7 +10,8 @@ function EditForm({ id }: EditFormType) {
 
   const [updatedTitle, setUpdatedTitle] = useState<string>("");
 
-  function UpdateTask(id: string) {
+  function UpdateTask(e: React.FormEvent<HTMLFormElement>, id: string) {
+    e.preventDefault();
     setUndoneTasks((prev) => {
       return prev.map((task) => {
         if (task.id === id) {
@@ -22,14 +23,21 @@ function EditForm({ id }: EditFormType) {
   }
 
   return (
-    <form onSubmit={() => UpdateTask(id)} className="flex min-w-full">
+    <form onSubmit={(e) => UpdateTask(e, id)} className="flex min-w-full">
       <input
         type="text"
         placeholder="Edite a tarefa"
         className="h-12 flex-1 border border-violet-500 bg-violet-950 p-2 outline-none"
-        maxLength={80}
         value={updatedTitle}
+        maxLength={80}
+        required
+        pattern="^.{1,80}$"
         onChange={(e) => setUpdatedTitle(e.target.value)}
+        onInvalid={(e) =>
+          (e.target as HTMLInputElement).setCustomValidity(
+            "Este campo não pode ficar vazio"
+          )
+        }
       />
       <button
         type="submit"
