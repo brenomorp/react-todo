@@ -6,7 +6,7 @@ type GlbalProviderProps = {
   children: ReactNode;
 };
 
-export type TaskType = { title: string; id: string };
+export type TaskType = { title: string; id: string; updating: boolean };
 
 function GlobalProvider({ children }: GlbalProviderProps) {
   const [undoneTasks, setUndoneTasks] = useState<TaskType[]>([]);
@@ -16,7 +16,7 @@ function GlobalProvider({ children }: GlbalProviderProps) {
   function addTask(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
-    setUndoneTasks([...undoneTasks, { title, id: nanoid() }]);
+    setUndoneTasks([...undoneTasks, { title, id: nanoid(), updating: false }]);
     setTitle("");
   }
 
@@ -36,6 +36,17 @@ function GlobalProvider({ children }: GlbalProviderProps) {
     setUndoneTasks(undoneTasksList);
   }
 
+  function handleClickUpdate(id: string) {
+    setUndoneTasks((prev) => {
+      return prev.map((task) => {
+        if (task.id === id) {
+          return { ...task, updating: !task.updating };
+        }
+        return task;
+      });
+    });
+  }
+
   const contextValue = {
     title,
     setTitle,
@@ -46,6 +57,7 @@ function GlobalProvider({ children }: GlbalProviderProps) {
     addTask,
     deleteTask,
     markAsDone,
+    handleClickUpdate,
   };
 
   return (

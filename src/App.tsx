@@ -20,7 +20,12 @@ function App() {
             </p>
             <div className="flex w-full flex-col gap-4 overflow-y-auto scroll-smooth px-4 scrollbar-thin scrollbar-track-violet-700 scrollbar-thumb-violet-500 scrollbar-track-rounded-lg scrollbar-thumb-rounded-lg">
               {undoneTasks.map((task) => (
-                <UndoneTask text={task.title} id={task.id} key={task.id} />
+                <UndoneTask
+                  text={task.title}
+                  id={task.id}
+                  updating={task.updating}
+                  key={task.id}
+                />
               ))}
               {doneTasks.map((task) => (
                 <DoneTask text={task.title} id={task.id} key={task.id} />
