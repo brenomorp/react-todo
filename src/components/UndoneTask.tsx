@@ -5,7 +5,7 @@ import EditForm from "./EditForm";
 type TaskProps = {
   text: string;
   id: string;
-  updating: boolean;
+  updating?: boolean;
 };
 
 function UndoneTask({ text, id, updating }: TaskProps) {

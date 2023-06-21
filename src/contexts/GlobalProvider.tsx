@@ -6,7 +6,7 @@ type GlbalProviderProps = {
   children: ReactNode;
 };
 
-export type TaskType = { title: string; id: string; updating: boolean };
+export type TaskType = { title: string; id: string; updating?: boolean };
 
 function GlobalProvider({ children }: GlbalProviderProps) {
   const [undoneTasks, setUndoneTasks] = useState<TaskType[]>([]);
@@ -32,7 +32,10 @@ function GlobalProvider({ children }: GlbalProviderProps) {
     const undoneTasksList = undoneTasks.filter((task) => task.id !== id);
     const doneTask = undoneTasks.filter((task) => task.id === id);
 
-    setDoneTasks([...doneTasks, doneTask[0]]);
+    setDoneTasks([
+      ...doneTasks,
+      { title: doneTask[0].title, id: doneTask[0].id },
+    ]);
     setUndoneTasks(undoneTasksList);
   }
 
